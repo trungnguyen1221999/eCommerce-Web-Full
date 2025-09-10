@@ -126,7 +126,7 @@ const NavText = styled.p`
 `;
 
 const Wrapper = styled.div`
-  width: 100vw;
+  max-width: 100vw;
   background-color: ${({ theme }) => theme.colors.banner};
   padding: 1rem 0;
 `;

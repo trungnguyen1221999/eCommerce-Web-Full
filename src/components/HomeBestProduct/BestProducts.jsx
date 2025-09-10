@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import BestProductData from "./BestProductData";
 
-import ProductCard from "./../Product/ProductCard";
+import ProductCard from "../Product/ProductCard";
 import Button from "../Button";
 import Container from "../Containers/Container";
 
-const BestProducts = () => {
+const BestProducts = ({ products }) => {
   const { heading, desc, ads } = BestProductData;
 
   const [timeLeft, setTimeLeft] = useState({
@@ -39,9 +39,6 @@ const BestProducts = () => {
     return () => clearInterval(interval);
   }, [ads.time]);
 
-  const products = Array.from({ length: 6 }, (_, i) => i + 1);
-
-  // Hàm format luôn 2 số
   const formatTime = (num) => (num < 10 ? `0${num}` : num);
 
   return (
@@ -56,7 +53,7 @@ const BestProducts = () => {
 
         <GridWrapper>
           {/* Ads chiếm 2 cột */}
-          <AdsCard>
+          <AdsCard background={ads.background}>
             <AdsContent>
               <CountdownWrapper>
                 <CountdownBox>
@@ -69,27 +66,21 @@ const BestProducts = () => {
                 </CountdownBox>
                 <CountdownBox>
                   {formatTime(timeLeft.minutes)}
-                  <CountdownLabel>Mins</CountdownLabel>
+                  <CountdownLabel>Minutes</CountdownLabel>
                 </CountdownBox>
                 <CountdownBox>
                   {formatTime(timeLeft.seconds)}
-                  <CountdownLabel>Secs</CountdownLabel>
+                  <CountdownLabel>Seconds</CountdownLabel>
                 </CountdownBox>
               </CountdownWrapper>
-
               <AdsTitle>{ads.title}</AdsTitle>
               <Button label={ads.btn} />
             </AdsContent>
           </AdsCard>
 
-          {/* Hàng 1: 2 product card */}
-          {products.slice(0, 2).map((p) => (
-            <ProductCard key={p} />
-          ))}
-
-          {/* Hàng 2: 4 product card */}
-          {products.slice(2).map((p) => (
-            <ProductCard key={p} />
+          {/* Product cards */}
+          {products.slice(0, 14).map((p, index) => (
+            <ProductCard product={p} key={p.id || index} />
           ))}
         </GridWrapper>
       </Section>
@@ -118,7 +109,7 @@ const HeadingWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 6rem;
+  margin-bottom: 4rem;
 `;
 
 const Line = styled.span`
@@ -145,8 +136,7 @@ const GridWrapper = styled.div`
 
 const AdsCard = styled.div`
   grid-column: span 2;
-  background: url(${(props) => BestProductData.ads.background}) center/cover
-    no-repeat;
+  background: url(${(props) => props.background}) center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,13 +172,13 @@ const CountdownBox = styled.div`
 `;
 
 const CountdownLabel = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-top: 0.3rem;
   color: ${({ theme }) => theme.colors.textLight};
 `;
 
 const AdsTitle = styled.h3`
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 1.6rem;
-  color: ${({ theme }) => theme.colors.primary || "#3333"};
+  color: ${({ theme }) => theme.colors.primary || "#fff"};
 `;

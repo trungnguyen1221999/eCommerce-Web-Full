@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import SvgProductData from "./SvgProductData";
 
-const ProductCard = () => {
+const ProductCard = ({ product }) => {
   const [hover, setHover] = useState(false);
 
   return (
@@ -11,18 +11,12 @@ const ProductCard = () => {
       onMouseLeave={() => setHover(false)}
     >
       <ImageWrapper>
-        <img
-          src="https://xstore.8theme.com/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-1.1-min.jpg"
-          alt=""
-        />
-        <img
-          src="https://xstore.b-cdn.net/elementor2/marseille04/wp-content/uploads/sites/2/2022/12/Image-1.2-min.jpg"
-          alt=""
-        />
+        <img className="front" src={product.images[0]} alt="" />
+        <img className="back" src={product.images[1]} alt="" />
       </ImageWrapper>
 
-      <Title>Product Title</Title>
-      <Price>$Price</Price>
+      <Title>{product.name}</Title>
+      <Price>$ {product.price}</Price>
 
       <IconList show={hover}>
         {SvgProductData.map((icon) => (
@@ -48,7 +42,7 @@ const ImageWrapper = styled.div`
   height: 30rem;
   overflow: hidden;
 
-  img {
+  img.front {
     position: absolute;
     top: 0;
     left: 0;
@@ -56,17 +50,24 @@ const ImageWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     transition: opacity 0.4s ease;
+    opacity: 1;
   }
 
-  img:nth-child(2) {
+  img.back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease;
     opacity: 0;
   }
 
-  &:hover img:nth-child(1) {
+  &:hover img.front {
     opacity: 0;
   }
-
-  &:hover img:nth-child(2) {
+  &:hover img.back {
     opacity: 1;
   }
 `;
@@ -81,11 +82,10 @@ const Price = styled.div`
   color: ${({ theme }) => theme.colors.primary || "#333"};
 `;
 
-// Icon list
 const IconList = styled.div`
   position: absolute;
   top: 50%;
-  right: 2rem; /* ban đầu ở ngoài */
+  right: 2rem;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
