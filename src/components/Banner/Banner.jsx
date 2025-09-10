@@ -72,9 +72,10 @@ const FeaturesWrapper = styled.div`
   justify-content: space-between;
   gap: 4rem;
   background: ${({ theme }) => theme.colors.primary};
-  padding: 1.6rem 3.2rem;
+  padding: 2rem 6rem;
   border-radius: 1rem;
   color: white;
+  min-height: 12rem;
 `;
 
 const FeatureItem = styled.div`
@@ -82,7 +83,6 @@ const FeatureItem = styled.div`
   align-items: center; /* icon nằm ngang với text */
   gap: 1.2rem; /* khoảng cách giữa icon và text */
   color: ${({ theme }) => theme.colors.white};
-  max-width: 18rem;
 
   svg {
     width: 3rem;

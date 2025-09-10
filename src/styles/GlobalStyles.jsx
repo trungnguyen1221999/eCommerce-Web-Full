@@ -13,11 +13,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Roboto Mono', 'Arial', sans-serif;
+    font-family: 'Roboto Mono',  sans-serif;
     font-size: 1.6rem; /* 16px */
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
+    font-weight: 400;
   }
 
   a {
@@ -37,6 +38,9 @@ const GlobalStyle = createGlobalStyle`
   }
   a, btn, input, textarea {
     font-family: 'Roboto Mono', 'Arial', sans-serif;
+  }
+  h1, h2, h3, h4, h5{
+    font-weight: 400;
   }
 `;
 

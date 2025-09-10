@@ -1,11 +1,17 @@
-import React from "react";
 import Container from "./../Containers/Container";
 import Logo from "./../Logo/Logo";
 import NavData from "./NavData";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import SideBar from "../SideBar/SideBar";
+import { useContext } from "react";
+import SideBarContext from "../../Context/SidebarContext";
+import SignIn from "../SideBar/SignIn/SignIn";
+import Sidebar from "../SideBar/SideBar";
+import Compare from "../SideBar/Compare/Comapre";
 
 const Nav = () => {
+  const { isOpened, setIsOpened } = useContext(SideBarContext);
   return (
     <Wrapper>
       <StyledContainer>
@@ -37,15 +43,28 @@ const Nav = () => {
               </StyledLink>
             ))}
             <NavText>{NavData.search}</NavText>
-            <NavText>{NavData.signIn}</NavText>
+            <NavText
+              onClick={() => setIsOpened({ state: true, type: "signin" })}
+            >
+              {NavData.signIn}
+            </NavText>
           </StyledNavLinks>
           <StyledIconList>
-            {NavData.icon.slice(3).map(({ svg }, i) => (
-              <span key={i}>{svg}</span>
+            {NavData.icon.slice(3).map(({ svg, id }) => (
+              <span
+                onClick={() => setIsOpened({ state: true, type: id })}
+                key={id}
+              >
+                {svg}
+              </span>
             ))}
           </StyledIconList>
         </Group>
       </StyledContainer>
+      <Sidebar>
+        {isOpened.type === "signin" && <SignIn />}
+        {isOpened.type === "compare" && <Compare />}
+      </Sidebar>
     </Wrapper>
   );
 };
@@ -56,6 +75,7 @@ export default Nav;
 const StyledContainer = styled(Container)`
   justify-content: space-between;
   align-items: center;
+  background-color: transparent;
 `;
 
 const Group = styled.div`
@@ -127,6 +147,6 @@ const NavText = styled.p`
 
 const Wrapper = styled.div`
   max-width: 100vw;
-  background-color: ${({ theme }) => theme.colors.banner};
   padding: 1rem 0;
+  position: sticky;
 `;
