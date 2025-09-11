@@ -2,31 +2,39 @@ import React, { useState } from "react";
 import SignInData from "./SignInData";
 import styled from "styled-components";
 import Button from "../../Button";
-
+import { Formik, Field, ErrorMessage, Form } from "formik";
+import SignInInitialValues, { SignInSchema } from "../../../Formik/SignInValid";
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Wrapper>
       <Title>{SignInData.title}</Title>
-      <form>
-        <Input type="text" placeholder={SignInData.user} />
+      <Formik
+        initialValues={SignInInitialValues}
+        validationSchema={SignInSchema}
+        onSubmit={(values) => console.log(values)}
+      >
+        <Form>
+          <Input name="username" type="text" placeholder={SignInData.user} />
+          <StyledErrorMessage name="username" component="div" />
+          <PasswordWrapper>
+            <Input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder={SignInData.password.pass}
+            />
+            <StyledErrorMessage name="password" component="div" />
+          </PasswordWrapper>
 
-        <PasswordWrapper>
-          <Input
-            type={showPassword ? "text" : "password"}
-            placeholder={SignInData.password.pass}
-          />
-        </PasswordWrapper>
+          <RememberWrapper>
+            <Field type="checkbox" id="remember" name="remember" />
+            <label htmlFor="remember">{SignInData.remember}</label>
+          </RememberWrapper>
 
-        <RememberWrapper>
-          <input type="checkbox" id="remember" />
-          <label htmlFor="remember">{SignInData.remember}</label>
-        </RememberWrapper>
-
-        <StyledButton type="submit" label={SignInData.btn}></StyledButton>
-      </form>
-
+          <StyledButton type="submit" label={SignInData.btn}></StyledButton>
+        </Form>
+      </Formik>
       <Forget>{SignInData.forget}</Forget>
     </Wrapper>
   );
@@ -70,7 +78,7 @@ const Title = styled.h2`
   }
 `;
 
-const Input = styled.input`
+const Input = styled(Field)`
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -120,4 +128,10 @@ const Forget = styled.a`
 const StyledButton = styled(Button)`
   width: 30rem;
   margin: 0 auto;
+`;
+
+const StyledErrorMessage = styled(ErrorMessage)`
+  color: red;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 `;
