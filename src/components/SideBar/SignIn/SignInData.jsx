@@ -16,6 +16,7 @@ const SignInData = {
   },
   remember: "Remember me",
   btn: "LOGIN",
+  btnSignUp: "SIGN UP",
   forget: "Lost your password?",
 };
 

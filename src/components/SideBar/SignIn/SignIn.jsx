@@ -33,6 +33,7 @@ const SignIn = () => {
           </RememberWrapper>
 
           <StyledButton type="submit" label={SignInData.btn}></StyledButton>
+          <SignupBtn type="submit" label={SignInData.btnSignUp}></SignupBtn>
         </Form>
       </Formik>
       <Forget>{SignInData.forget}</Forget>
@@ -127,11 +128,22 @@ const Forget = styled.a`
 
 const StyledButton = styled(Button)`
   width: 30rem;
-  margin: 0 auto;
+  margin: 0rem auto;
 `;
 
 const StyledErrorMessage = styled(ErrorMessage)`
   color: red;
   font-size: 1.2rem;
-  margin-bottom: 10px;
+  transform: translateY(-1rem);
+`;
+
+const SignupBtn = styled(StyledButton)`
+  margin-top: 1rem;
+  border: 1px solid black !important;
+  background-color: white;
+  color: black;
+  transition: all 0.3s ease;
+  &:hover {
+    scale: 0.9;
+  }
 `;
