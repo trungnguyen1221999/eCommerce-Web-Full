@@ -36,7 +36,7 @@ const IconWrapper = styled.div`
 
 const Title = styled.h3`
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 200;
   text-align: center;
   text-transform: uppercase;
 `;
