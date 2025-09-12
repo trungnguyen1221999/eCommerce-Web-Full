@@ -4,12 +4,37 @@ import styled from "styled-components";
 import Button from "../../Button";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import SignInInitialValues, { SignInSchema } from "../../../Formik/SignInValid";
+import { motion, AnimatePresence } from "framer-motion";
+
 const SignIn = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(true);
 
   return (
     <Wrapper>
-      <Title>{SignInData.title}</Title>
+      <AnimatePresence mode="wait">
+        {isSignIn ? (
+          <MotionTitle
+            key="signin"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {SignInData.title}
+          </MotionTitle>
+        ) : (
+          <MotionTitle
+            key="signup"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {SignInData.title2}
+          </MotionTitle>
+        )}
+      </AnimatePresence>
+
       <Formik
         initialValues={SignInInitialValues}
         validationSchema={SignInSchema}
@@ -18,24 +43,55 @@ const SignIn = () => {
         <Form>
           <Input name="username" type="text" placeholder={SignInData.user} />
           <StyledErrorMessage name="username" component="div" />
+
           <PasswordWrapper>
             <Input
               name="password"
-              type={showPassword ? "text" : "password"}
+              type="password"
               placeholder={SignInData.password.pass}
             />
             <StyledErrorMessage name="password" component="div" />
           </PasswordWrapper>
+
+          <AnimatePresence mode="wait">
+            {!isSignIn && (
+              <motion.div
+                key="confirm"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <PasswordWrapper>
+                  <Input
+                    name="confirmPassword"
+                    type="password"
+                    placeholder={SignInData.confirmPassword}
+                  />
+                  <StyledErrorMessage name="confirmPassword" component="div" />
+                </PasswordWrapper>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <RememberWrapper>
             <Field type="checkbox" id="remember" name="remember" />
             <label htmlFor="remember">{SignInData.remember}</label>
           </RememberWrapper>
 
-          <StyledButton type="submit" label={SignInData.btn}></StyledButton>
-          <SignupBtn type="submit" label={SignInData.btnSignUp}></SignupBtn>
+          <StyledButton
+            onClick={() => setIsSignIn(true)}
+            type="submit"
+            label={SignInData.btn}
+          />
+          <SignupBtn
+            onClick={() => setIsSignIn(false)}
+            type="button"
+            label={SignInData.btnSignUp}
+          />
         </Form>
       </Formik>
+
       <Forget>{SignInData.forget}</Forget>
     </Wrapper>
   );
@@ -54,30 +110,11 @@ const Title = styled.h2`
   font-weight: normal;
   text-transform: uppercase;
   font-size: 1.8rem;
-  width: fit-content;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
   margin: 0 auto 20px auto;
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 100%;
-    height: 2px;
-    background: #333;
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover::after {
-    transform: scaleX(1);
-  }
+  position: relative;
 `;
+
+const MotionTitle = styled(motion(Title))``;
 
 const Input = styled(Field)`
   width: 100%;
@@ -89,22 +126,6 @@ const Input = styled(Field)`
 
 const PasswordWrapper = styled.div`
   position: relative;
-`;
-
-const Icon = styled.span`
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-
-  svg {
-    width: 100%;
-    height: 100%;
-    fill: #555;
-  }
 `;
 
 const RememberWrapper = styled.div`
@@ -140,10 +161,12 @@ const StyledErrorMessage = styled(ErrorMessage)`
 const SignupBtn = styled(StyledButton)`
   margin-top: 1rem;
   border: 1px solid black !important;
+  font-size: 1.4rem;
   background-color: white;
   color: black;
   transition: all 0.3s ease;
   &:hover {
     scale: 0.9;
+    background-color: #e4e4e4fa;
   }
 `;

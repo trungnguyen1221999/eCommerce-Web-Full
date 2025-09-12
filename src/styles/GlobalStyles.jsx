@@ -31,6 +31,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button {
+    font-family: 'Roboto Mono',  sans-serif;
     cursor: pointer;
     border: none;
     outline: none;

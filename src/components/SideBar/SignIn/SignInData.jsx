@@ -1,5 +1,6 @@
 const SignInData = {
   title: "Sign In",
+  title2: "Sign Up",
   user: "Username or email *",
   password: {
     pass: "Password *",
@@ -14,9 +15,10 @@ const SignInData = {
       </svg>
     ),
   },
+  confirmPassword: "Confirm Password *",
   remember: "Remember me",
   btn: "LOGIN",
-  btnSignUp: "SIGN UP",
+  btnSignUp: "Don't have an account?",
   forget: "Lost your password?",
 };
 
