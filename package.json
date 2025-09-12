@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "axios": "^1.11.0",
+    "cookies": "^0.9.1",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.12",
+    "js-cookie": "^3.0.5",
+    "js-cookies": "^1.0.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",

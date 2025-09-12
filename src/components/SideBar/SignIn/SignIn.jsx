@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ToastContext } from "../../../Context/ToastContext";
 import register from "../../../Axios/register";
 import login from "../../../Axios/login";
+import Cookies from "js-cookie";
 
 const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -43,34 +44,26 @@ const SignIn = () => {
         initialValues={SignInInitialValues}
         validationSchema={SignInSchema}
         onSubmit={async (values) => {
-          console.log(values);
           if (isLoading) return;
-          if (!isSignIn) {
-            const { username, password } = values;
-            setIsLoading(true);
-            try {
-              const res = await register({ username, password });
+          setIsLoading(true);
+          const { username, password } = values;
 
+          try {
+            if (isSignIn) {
+              const res = await login({ username, password });
+              const { id, token, refreshToken } = res.data;
+              Cookies.set("id", id);
+              Cookies.set("token", token);
+              Cookies.set("refreshToken", refreshToken);
+            } else {
+              const res = await register({ username, password });
               toast.success(res.data.message);
               setIsSignIn(true);
-              setIsLoading(false);
-            } catch (err) {
-              toast.error(err.response.data.message);
-              setIsLoading(false);
             }
-          }
-          if (isSignIn) {
-            const { username, password } = values;
-            setIsLoading(true);
-            try {
-              const res = await login({ username, password });
-              console.log(res);
-              toast.success(res.data.message);
-              setIsLoading(false);
-            } catch (err) {
-              toast.error(err.response.data.message);
-              setIsLoading(false);
-            }
+          } catch (err) {
+            toast.error(err.response?.data?.message || "Something went wrong");
+          } finally {
+            setIsLoading(false);
           }
         }}
       >
