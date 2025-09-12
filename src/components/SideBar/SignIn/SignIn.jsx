@@ -7,10 +7,12 @@ import SignInInitialValues, { SignInSchema } from "../../../Formik/SignInValid";
 import { motion, AnimatePresence } from "framer-motion";
 import { ToastContext } from "../../../Context/ToastContext";
 import register from "../../../Axios/register";
+import login from "../../../Axios/login";
 
 const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const { toast } = useContext(ToastContext);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <Wrapper>
       <AnimatePresence mode="wait">
@@ -42,16 +44,32 @@ const SignIn = () => {
         validationSchema={SignInSchema}
         onSubmit={async (values) => {
           console.log(values);
+          if (isLoading) return;
           if (!isSignIn) {
             const { username, password } = values;
-
+            setIsLoading(true);
             try {
               const res = await register({ username, password });
+
+              toast.success(res.data.message);
+              setIsSignIn(true);
+              setIsLoading(false);
+            } catch (err) {
+              toast.error(err.response.data.message);
+              setIsLoading(false);
+            }
+          }
+          if (isSignIn) {
+            const { username, password } = values;
+            setIsLoading(true);
+            try {
+              const res = await login({ username, password });
               console.log(res);
               toast.success(res.data.message);
+              setIsLoading(false);
             } catch (err) {
-              console.log(err);
               toast.error(err.response.data.message);
+              setIsLoading(false);
             }
           }
         }}
@@ -97,7 +115,13 @@ const SignIn = () => {
 
           <StyledButton
             type="submit"
-            label={isSignIn ? SignInData.btn : SignInData.title3}
+            label={
+              isLoading
+                ? SignInData.loading
+                : isSignIn
+                ? SignInData.btn
+                : SignInData.title3
+            }
           />
 
           <SignupBtn

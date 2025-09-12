@@ -3,6 +3,7 @@ const SignInData = {
   title2: "Sign Up",
   title3: "Register",
   title4: "Already have an account?",
+  loading: "Loading...",
   user: "Username or email *",
   password: {
     pass: "Password *",
