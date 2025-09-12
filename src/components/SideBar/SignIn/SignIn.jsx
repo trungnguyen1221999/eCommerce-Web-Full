@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SignInData from "./SignInData";
 import styled from "styled-components";
 import Button from "../../Button";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import SignInInitialValues, { SignInSchema } from "../../../Formik/SignInValid";
 import { motion, AnimatePresence } from "framer-motion";
+import { ToastContext } from "../../../Context/ToastContext";
 
 const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true);
-
+  const { toast } = useContext(ToastContext);
   return (
     <Wrapper>
       <AnimatePresence mode="wait">
@@ -38,7 +39,10 @@ const SignIn = () => {
       <Formik
         initialValues={SignInInitialValues}
         validationSchema={SignInSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          console.log(values);
+          toast.success("Form submitted successfully!");
+        }}
       >
         <Form>
           <Input name="username" type="text" placeholder={SignInData.user} />
