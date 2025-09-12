@@ -6,6 +6,7 @@ import { Formik, Field, ErrorMessage, Form } from "formik";
 import SignInInitialValues, { SignInSchema } from "../../../Formik/SignInValid";
 import { motion, AnimatePresence } from "framer-motion";
 import { ToastContext } from "../../../Context/ToastContext";
+import register from "../../../Axios/register";
 
 const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -39,9 +40,20 @@ const SignIn = () => {
       <Formik
         initialValues={SignInInitialValues}
         validationSchema={SignInSchema}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           console.log(values);
-          toast.success("Form submitted successfully!");
+          if (!isSignIn) {
+            const { username, password } = values;
+
+            try {
+              const res = await register({ username, password });
+              console.log(res);
+              toast.success(res.data.message);
+            } catch (err) {
+              console.log(err);
+              toast.error(err.response.data.message);
+            }
+          }
         }}
       >
         <Form>
@@ -84,14 +96,14 @@ const SignIn = () => {
           </RememberWrapper>
 
           <StyledButton
-            onClick={() => setIsSignIn(true)}
             type="submit"
-            label={SignInData.btn}
+            label={isSignIn ? SignInData.btn : SignInData.title3}
           />
+
           <SignupBtn
-            onClick={() => setIsSignIn(false)}
+            onClick={() => setIsSignIn(!isSignIn)}
             type="button"
-            label={SignInData.btnSignUp}
+            label={isSignIn ? SignInData.btnSignUp : SignInData.title4}
           />
         </Form>
       </Formik>
@@ -165,7 +177,7 @@ const StyledErrorMessage = styled(ErrorMessage)`
 const SignupBtn = styled(StyledButton)`
   margin-top: 1rem;
   border: 1px solid black !important;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   background-color: white;
   color: black;
   transition: all 0.3s ease;
