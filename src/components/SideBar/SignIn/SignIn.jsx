@@ -181,7 +181,7 @@ const Forget = styled.a`
 `;
 
 const StyledButton = styled(Button)`
-  width: 30rem;
+  width: 100%;
   margin: 0rem auto;
 `;
 
