@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SignInData from "./SignInData";
 import styled from "styled-components";
 import Button from "../../Button";
@@ -7,10 +7,13 @@ import SignInInitialValues, { SignInSchema } from "../../../Formik/SignInValid";
 import { motion, AnimatePresence } from "framer-motion";
 import { ToastContext } from "../../../Context/ToastContext";
 import register from "../../../Axios/register";
-import login from "../../../Axios/login";
+import login, { userInfo } from "../../../Axios/login";
 import Cookies from "js-cookie";
 
 const SignIn = () => {
+  useEffect(() => {
+    userInfo();
+  }, []);
   const [isSignIn, setIsSignIn] = useState(true);
   const { toast } = useContext(ToastContext);
   const [isLoading, setIsLoading] = useState(false);
